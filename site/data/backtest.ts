@@ -179,23 +179,23 @@ export interface Indicator {
 
 export const currentIndicators: Indicator[] = [
   // Bottom indicators (8 total)
-  { name: 'MVRV Z-Score', tier: 'bottom', active: true, value: '1.22', description: 'Market value vs realized value ratio below threshold' },
+  { name: 'MVRV Z-Score', tier: 'bottom', active: true, value: '0.40', description: 'Z-Score compressed to levels last seen Oct 2022' },
   { name: 'Puell Multiple', tier: 'bottom', active: true, value: '0.6', description: 'Miner revenue relative to 365-day average is low' },
   { name: 'RHODL Ratio', tier: 'bottom', active: false, value: '4200', description: 'Ratio of 1-week to 1-year HODL bands' },
   { name: 'Reserve Risk', tier: 'bottom', active: true, value: '0.002', description: 'Confidence is high relative to price (low risk/reward)' },
-  { name: 'Net Unrealized P/L', tier: 'bottom', active: false, value: '0.35', description: 'Network-wide profit/loss status' },
-  { name: '200W MA Multiplier', tier: 'bottom', active: false, value: '1.4', description: 'Price relative to 200-week moving average' },
-  { name: 'Realized Price', tier: 'bottom', active: false, value: '$31K', description: 'Average cost basis of all BTC' },
-  { name: 'Hash Ribbon', tier: 'bottom', active: false, value: 'Neutral', description: 'Miner capitulation signal' },
+  { name: 'Net Unrealized P/L', tier: 'bottom', active: false, value: '0.18', description: 'Network-wide profit/loss in hope/fear zone' },
+  { name: '200W MA Multiplier', tier: 'bottom', active: false, value: '1.17', description: 'Price relative to 200-week moving average ($57.9K)' },
+  { name: 'Realized Price', tier: 'bottom', active: false, value: '$55.5K', description: 'Aggregate cost basis of all BTC on-chain' },
+  { name: 'Hash Ribbon', tier: 'bottom', active: true, value: 'Buy', description: 'Miner capitulation detected — hashprice at record lows' },
   // Top indicators (6 total)
   { name: 'Pi Cycle Top', tier: 'top', active: false, value: 'Inactive', description: '111-day and 350-day MA crossover' },
-  { name: 'MVRV Z-Score (High)', tier: 'top', active: false, value: '1.22', description: 'MVRV above extreme threshold' },
-  { name: 'Terminal Price', tier: 'top', active: false, value: '$180K', description: 'Theoretical cycle ceiling based on transfer price' },
+  { name: 'MVRV Z-Score (High)', tier: 'top', active: false, value: '0.40', description: 'Z-Score far below extreme top threshold (>7)' },
+  { name: 'Terminal Price', tier: 'top', active: false, value: '$291K', description: 'Theoretical cycle ceiling based on transfer price' },
   { name: 'Top Cap Model', tier: 'top', active: false, value: '$200K', description: 'Market cap oscillator peak detection' },
-  { name: 'NUPL Euphoria', tier: 'top', active: false, value: '0.35', description: 'Net unrealized profit in euphoria zone' },
-  { name: 'Puell Multiple (High)', tier: 'top', active: false, value: '0.6', description: 'Miner revenue extremely elevated' },
+  { name: 'NUPL Euphoria', tier: 'top', active: false, value: '0.18', description: 'Net unrealized profit far below euphoria zone (>0.75)' },
+  { name: 'Puell Multiple (High)', tier: 'top', active: false, value: '0.6', description: 'Miner revenue far below extreme top threshold (>3.4)' },
 ];
 
-export const currentBottomScore = 3;
+export const currentBottomScore = 4;
 export const currentTopScore = 0;
 export const currentSignal: 'ACCUMULATE' | 'DISTRIBUTE' | 'NEUTRAL' = 'ACCUMULATE';
