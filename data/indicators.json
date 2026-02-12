@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-02-12T14:00:00Z",
+  "btcPrice": 68040,
+  "realizedPrice": 55548,
+  "sthCostBasis": 92000,
+  "sma200": 101702,
+  "trueMarketMean": 79124,
+  "cvddFloor": 46133,
+  "terminalPrice": 290819,
+  "mvrv": 1.22,
+  "sthMvrv": 0.74,
+  "lthMvrv": 1.67,
+  "mayerMultiple": 0.67,
+  "realizedPriceRatio": 1.24,
+  "lthSopr": 0.78,
+  "avivRatio": 0.852,
+  "cvddRatio": 1.47,
+  "terminalPriceRatio": 0.23
+}

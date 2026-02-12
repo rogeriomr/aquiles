@@ -1,0 +1,36 @@
+{
+  "name": "aquiles",
+  "version": "1.0.0",
+  "description": "Cross-chain intelligence agent: uses Bitcoin on-chain indicators to manage Solana exposure",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "run:once": "ts-node scripts/run.ts",
+    "run:loop": "ts-node scripts/run-loop.ts",
+    "submit": "ts-node scripts/submit-project.ts"
+  },
+  "keywords": [
+    "solana",
+    "bitcoin",
+    "on-chain",
+    "trading",
+    "defi",
+    "agent"
+  ],
+  "author": "rogeriomenezesx",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.4.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/bs58": "^4.0.4",
+    "@types/node": "^20.11.0",
+    "@types/node-fetch": "^2.6.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.3.0"
+  }
+}
