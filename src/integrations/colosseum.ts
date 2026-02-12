@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { ColosseumProject } from '../types';
 import { logger } from '../utils/logger';
 
-const COLOSSEUM_API_BASE = 'https://api.colosseum.org/api';
+const COLOSSEUM_API_BASE = 'https://agents.colosseum.com/api';
 
 export async function getAgentStatus(apiKey: string): Promise<any> {
   logger.info('Fetching Colosseum agent status...');
