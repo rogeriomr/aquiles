@@ -117,13 +117,20 @@ export function generateAlert(
     lines.push('');
   }
 
-  // Loan warnings
+  // Lending management
   if (loanWarnings.length > 0) {
     lines.push(thinSep);
-    lines.push(`  LOAN WARNINGS`);
+    lines.push(`  DEFI LENDING MANAGEMENT (Kamino / Jupiter)`);
     lines.push(thinSep);
+    lines.push('');
+    lines.push('  The Achilles\' heel of investors: leveraging in euphoria, deleveraging at the bottom.');
+    lines.push('  On-chain data helps break this cycle with objective, historically-proven signals.');
+    lines.push('');
     for (const w of loanWarnings) {
-      const icon = w.severity === 'DANGER' ? '[!!!]' : w.severity === 'WARNING' ? '[! ]' : '[i ]';
+      const icon = w.severity === 'DANGER' ? '[!!!]'
+        : w.severity === 'OPPORTUNITY' ? '[ $ ]'
+        : w.severity === 'WARNING' ? '[! ]'
+        : '[i  ]';
       lines.push(`  ${icon} ${w.message}`);
     }
     lines.push('');

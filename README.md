@@ -6,9 +6,20 @@ Built for the [Colosseum Agent Hackathon](https://www.colosseum.org) (February 2
 
 ---
 
+## Why "Aquiles"?
+
+Every investor has an **Achilles' heel**: buying more during euphoria and greed, and turning bearish at the very bottom. This emotional cycle repeats every time -- people FOMO in at the top when everyone is celebrating, and panic sell at the bottom when fear dominates. This is the single biggest destroyer of portfolio value in crypto.
+
+**Aquiles exists to fix this.** Bitcoin on-chain indicators have been remarkably accurate at identifying cycle tops and bottoms throughout Bitcoin's entire history. By reading what the blockchain itself is telling us -- not headlines, not Twitter sentiment, not gut feeling -- Aquiles removes emotion from the equation and replaces it with data-driven conviction.
+
 ## The Problem
 
-Crypto investors lack tools that leverage Bitcoin's superior on-chain data to manage altcoin exposure. BTC leads market cycles with the most reliable on-chain indicators for detecting cycle tops and bottoms, yet Solana traders make decisions without this cross-chain intelligence -- leading to poor timing on entries/exits and unnecessary liquidations on lending protocols.
+Crypto investors lack tools that leverage Bitcoin's superior on-chain data to manage altcoin exposure. BTC leads market cycles, yet Solana traders make decisions based on emotion and price action alone -- leading to:
+
+- **Buying at the top**: Greed and FOMO drive investors to increase exposure at the worst possible moment
+- **Selling at the bottom**: Fear and panic cause capitulation right before recoveries
+- **Unnecessary liquidations**: Maintaining leveraged positions on Kamino/Jupiter during high-risk periods without cycle awareness
+- **Missed opportunities**: Failing to take DeFi loans at cycle bottoms when leverage is safest and upside is highest
 
 ## The Solution
 
@@ -16,10 +27,18 @@ Aquiles uses **8 bottom indicators + 6 top indicators** from BTC on-chain data t
 
 - **Auto Mode**: Automatically buys/sells SOL via Jupiter DEX swaps on Solana mainnet
 - **Alert Mode**: Sends detailed alerts with rationale, indicator breakdown, and price triggers
+- **Lending Advisor**: Guides when to deleverage and repay DeFi loans (high risk) vs. when it makes sense to take new positions (low risk)
+
+### DeFi Lending Management
+
+Aquiles doesn't just trade -- it protects your leveraged positions:
+
+- **High risk (top signals active)**: Alerts you to deleverage, repay loans on Kamino and Jupiter, and avoid new borrowing. History shows 50-80% drawdowns from cycle tops -- being leveraged at these levels is the fastest path to liquidation.
+- **Low risk (bottom signals active)**: After the market reaches historically low levels confirmed by on-chain data, Aquiles signals that it makes sense to start taking DeFi loans again -- leverage is safest when the downside is limited and the upside is highest.
 
 ## What Makes This Unique
 
-Out of 683+ projects in the Colosseum hackathon, **none** combine Bitcoin on-chain analysis with Solana execution. Aquiles fills this gap with a unique cross-chain intelligence approach.
+Out of 683+ projects in the Colosseum hackathon, **none** combine Bitcoin on-chain analysis with Solana execution. Aquiles fills this gap with a unique cross-chain intelligence approach. On-chain data has been the most reliable tool for navigating Bitcoin's cycles since its inception -- Aquiles brings that intelligence to Solana DeFi users for the first time.
 
 ---
 
@@ -56,10 +75,12 @@ Out of 683+ projects in the Colosseum hackathon, **none** combine Bitcoin on-cha
 | Terminal Price Ratio | Price approaching terminal | > 0.8 |
 
 ### Risk Levels
-- **ACUMULAR**: Bottom signals active, no top signals -> Increase SOL exposure
-- **DISTRIBUIR**: Top signals active, no bottom signals -> Reduce SOL exposure
-- **NEUTRO**: No strong signals -> Hold positions
-- **INCERTEZA**: Mixed signals -> Hedge with balanced allocation
+| Level | Condition | Action | Lending Guidance |
+|-------|-----------|--------|-----------------|
+| **ACCUMULATE** | Bottom signals active, no top signals | Increase SOL exposure | Safe to take DeFi loans -- downside is limited |
+| **DISTRIBUTE** | Top signals active, no bottom signals | Reduce SOL exposure | Deleverage and repay loans on Kamino/Jupiter |
+| **NEUTRAL** | No strong signals | Hold current positions | Maintain existing positions, avoid new leverage |
+| **UNCERTAINTY** | Mixed signals from both sides | Hedge with balanced allocation | Reduce leverage as precaution |
 
 ---
 
@@ -145,7 +166,7 @@ npx ts-node scripts/submit-project.ts
 - **Bottom Detector**: Scores each of 8 indicators as NORMAL/WATCH/STRONG/EXTREME
 - **Top Detector**: Scores each of 6 indicators with same tier system
 - **Risk Engine**: Combines scores into risk level, urgency, suggested action, and exposure %
-- **Loan Advisor**: Warns about lending risks based on cycle position
+- **Loan Advisor**: Guides DeFi lending decisions -- when to deleverage (top) vs. when to borrow (bottom)
 
 ### 3. Action Layer
 - **Alert Mode**: Generates formatted report with all indicators, convergences, price triggers, and recommendations
@@ -213,12 +234,13 @@ aquiles/
 
 ## Future Vision
 
-- Real-time Glassnode/CryptoQuant API integration
+- Real-time Glassnode/CryptoQuant API integration for live on-chain data
 - Multi-chain execution (ETH, ARB)
-- Telegram/Discord bot interface
-- Backtesting engine for historical cycle validation
+- Telegram/Discord bot interface for instant alerts
+- Backtesting engine to validate signals against all historical BTC cycles
+- Direct integration with Kamino and Jupiter lending for automated deleveraging
 - Integration with Drift, Marinade, and more Solana protocols
-- Web dashboard with historical charts
+- Web dashboard with historical charts and cycle visualization
 
 ---
 

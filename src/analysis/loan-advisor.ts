@@ -9,39 +9,63 @@ export function assessLoanRisk(
   const bottomScore = riskAssessment.bottomScore.score;
 
   // --- General Warnings Based on Cycle Position ---
+  // The Achilles' heel of investors: leveraging up during euphoria and deleveraging at the bottom.
+  // On-chain data has historically been accurate at identifying these moments across Bitcoin's entire history.
 
-  if (topScore === 0 && bottomScore >= 3) {
+  // BOTTOM ZONE: Safe to take loans -- downside is limited, upside is highest
+  if (topScore === 0 && bottomScore >= 5) {
+    warnings.push({
+      severity: 'OPPORTUNITY',
+      message: 'STRONG BOTTOM ZONE: Multiple on-chain indicators confirm historically low levels. This is when DeFi loans on Kamino/Jupiter carry the LEAST risk -- downside is limited and upside potential is highest. Consider opening leveraged positions.',
+    });
+  } else if (topScore === 0 && bottomScore >= 3) {
+    warnings.push({
+      severity: 'OPPORTUNITY',
+      message: 'Bottom signals active with no top signals. On-chain data suggests favorable conditions for SOL-collateral loans on Kamino/Jupiter. Risk of further drawdown is diminishing.',
+    });
+  } else if (topScore === 0 && bottomScore >= 1) {
     warnings.push({
       severity: 'INFO',
-      message: 'Bottom signals active with no top signals. Relatively safe to hold SOL-collateral positions. Consider increasing exposure.',
+      message: 'Early bottom signals detected. Safe to hold existing lending positions. Monitor for more confirmations before opening new leveraged positions.',
     });
   }
 
+  // NEUTRAL ZONE
+  if (topScore === 0 && bottomScore === 0) {
+    warnings.push({
+      severity: 'INFO',
+      message: 'No strong cycle signals. Maintain existing lending positions but avoid excessive new leverage. Wait for clearer on-chain data.',
+    });
+  }
+
+  // EARLY WARNING: Top signals starting to appear
   if (topScore >= 1 && topScore < 3) {
     warnings.push({
       severity: 'WARNING',
-      message: `${topScore}/6 top indicators active. Exercise caution with new SOL-collateral USD loans. Consider reducing LTV ratios.`,
+      message: `${topScore}/6 top indicators active. START PLANNING to deleverage. Reduce LTV ratios on Kamino/Jupiter loans and avoid opening new SOL-collateral borrowing.`,
     });
   }
 
+  // HIGH RISK: Deleverage now
   if (topScore >= 2) {
     warnings.push({
       severity: 'WARNING',
-      message: 'AVOID taking new USD loans with SOL as collateral. Multiple top indicators suggest increased risk of significant drawdown.',
+      message: 'AVOID new USD loans with SOL collateral on Kamino/Jupiter. Multiple top indicators suggest increased drawdown risk. History shows this is when leverage destroys portfolios.',
     });
   }
 
   if (topScore >= 3) {
     warnings.push({
       severity: 'DANGER',
-      message: `STRONG TOP SIGNAL (${topScore}/6). Consider repaying existing loans. Historical data shows 50-80% drawdowns from similar indicator levels.`,
+      message: `DELEVERAGE NOW (${topScore}/6 top signals). Repay existing loans on Kamino and Jupiter. Historical data shows 50-80% drawdowns from similar indicator levels -- leveraged positions face liquidation risk.`,
     });
   }
 
+  // CRITICAL: Maximum danger
   if (topScore >= 5) {
     warnings.push({
       severity: 'DANGER',
-      message: 'CRITICAL: REPAY ALL LOANS IMMEDIATELY. Extreme top conditions detected. High probability of cycle top and severe correction.',
+      message: 'CRITICAL: REPAY ALL DEFI LOANS IMMEDIATELY. Extreme top conditions detected across multiple on-chain metrics. High probability of cycle top and severe correction. Every cycle, leveraged investors get liquidated at this exact stage.',
     });
   }
 
