@@ -28,7 +28,7 @@ export async function runAgent(configOverride?: Partial<AgentConfig>): Promise<v
     indicators = await loadIndicators();
   } catch (error: any) {
     logger.error(`Failed to load indicators: ${error.message}`);
-    process.exit(1);
+    throw error;
   }
 
   // 3. Run analysis
@@ -88,14 +88,9 @@ export async function runAgent(configOverride?: Partial<AgentConfig>): Promise<v
     console.log(alert.report);
   }
 
-  // 6. Generate full report
+  // 6. Generate full report (available for programmatic use)
   const fullReport = generateFullReport(indicators, risk, loanWarnings, tradeResult);
   logger.info('Full report generated.');
-
-  // In alert mode, always print report
-  if (config.mode === 'alert') {
-    console.log('\n' + fullReport);
-  }
 
   logger.info('=== AQUILES AGENT CYCLE COMPLETE ===');
 }

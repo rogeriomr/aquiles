@@ -111,7 +111,7 @@ export function generateAlert(
     lines.push(thinSep);
     for (const t of risk.priceTriggers.slice(0, 8)) {
       const dist = ((t.price - indicators.btcPrice) / indicators.btcPrice * 100).toFixed(1);
-      const dir = t.direction === 'above' ? '↑' : '↓';
+      const dir = t.direction === 'above' ? 'UP' : 'DN';
       lines.push(`  ${dir} $${t.price.toLocaleString().padStart(10)}  (${dist.padStart(6)}%)  ${t.label}`);
     }
     lines.push('');
@@ -129,8 +129,8 @@ export function generateAlert(
     for (const w of loanWarnings) {
       const icon = w.severity === 'DANGER' ? '[!!!]'
         : w.severity === 'OPPORTUNITY' ? '[ $ ]'
-        : w.severity === 'WARNING' ? '[! ]'
-        : '[i  ]';
+        : w.severity === 'WARNING' ? '[!! ]'
+        : '[ i ]';
       lines.push(`  ${icon} ${w.message}`);
     }
     lines.push('');

@@ -2,6 +2,13 @@ import fetch from 'node-fetch';
 import { JupiterQuoteResponse, JupiterSwapResponse } from '../types';
 import { logger } from '../utils/logger';
 
+function fetchWithTimeout(url: string, options: any = {}, timeoutMs = 30000): Promise<any> {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Request timeout after ${timeoutMs}ms`)), timeoutMs)),
+  ]) as Promise<any>;
+}
+
 const DEFAULT_API_URL = 'https://quote-api.jup.ag/v6';
 
 export async function getQuote(
@@ -23,7 +30,7 @@ export async function getQuote(
   const url = `${apiUrl}/quote?${params}`;
   logger.info(`Jupiter quote: ${inputMint.slice(0, 8)}... -> ${outputMint.slice(0, 8)}... amount=${amount}`);
 
-  const res = await fetch(url);
+  const res = await fetchWithTimeout(url);
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Jupiter quote failed (${res.status}): ${text}`);
@@ -42,7 +49,7 @@ export async function getSwapTransaction(
   const url = `${apiUrl}/swap`;
   logger.info(`Jupiter swap: building transaction for ${userPublicKey.slice(0, 8)}...`);
 
-  const res = await fetch(url, {
+  const res = await fetchWithTimeout(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -66,7 +73,7 @@ export async function getSwapTransaction(
 
 export async function getPrice(tokenMint: string): Promise<number> {
   try {
-    const res = await fetch(`https://api.jup.ag/price/v2?ids=${tokenMint}`);
+    const res = await fetchWithTimeout(`https://api.jup.ag/price/v2?ids=${tokenMint}`);
     const data = (await res.json()) as any;
     const price = parseFloat(data?.data?.[tokenMint]?.price);
     return price || 0;

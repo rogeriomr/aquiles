@@ -66,7 +66,7 @@ export function buildTradeAction(
   if (suggestedAction === 'SELL_SOL') {
     // Sell SOL for USDC
     const solToSell = Math.floor((cappedDelta / 100) * totalValueUsd / solPrice * LAMPORTS_PER_SOL);
-    const available = solBalanceLamports - 10_000_000; // keep 0.01 SOL for fees
+    const available = solBalanceLamports - 50_000_000; // keep 0.05 SOL for fees
     const amount = Math.min(solToSell, Math.max(0, available));
 
     if (amount < 1_000_000) { // < 0.001 SOL
@@ -115,12 +115,13 @@ export async function executeTrade(
 
     // Check price impact
     const priceImpact = parseFloat(quote.priceImpactPct);
+    const inAmt = parseInt(quote.inAmount) || 1; // guard against division by zero
     if (priceImpact > 2) {
       return {
         success: false,
         inputAmount: parseInt(quote.inAmount),
         outputAmount: parseInt(quote.outAmount),
-        price: parseInt(quote.outAmount) / parseInt(quote.inAmount),
+        price: parseInt(quote.outAmount) / inAmt,
         error: `Price impact too high: ${priceImpact}%`,
       };
     }
@@ -143,7 +144,7 @@ export async function executeTrade(
       txSignature,
       inputAmount: parseInt(quote.inAmount),
       outputAmount: parseInt(quote.outAmount),
-      price: parseInt(quote.outAmount) / parseInt(quote.inAmount),
+      price: parseInt(quote.outAmount) / inAmt,
     };
   } catch (error: any) {
     logger.error(`Trade execution failed: ${error.message}`);

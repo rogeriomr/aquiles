@@ -18,19 +18,20 @@ async function main() {
   logger.info('Press Ctrl+C to stop');
   logger.info('');
 
-  // Run immediately on start
-  await runAgent(mode ? { mode } : undefined);
-
-  // Then run at intervals
-  setInterval(async () => {
-    logger.info('');
-    logger.info('--- NEW CYCLE ---');
-    try {
-      await runAgent(mode ? { mode } : undefined);
-    } catch (err: any) {
-      logger.error(`Cycle failed: ${err.message}`);
+  // Sequential loop to prevent concurrent cycles
+  async function loop() {
+    while (true) {
+      try {
+        await runAgent(mode ? { mode } : undefined);
+      } catch (err: any) {
+        logger.error(`Cycle failed: ${err.message}`);
+      }
+      logger.info(`Next cycle in ${config.loopIntervalMinutes} minutes...`);
+      await new Promise(r => setTimeout(r, intervalMs));
     }
-  }, intervalMs);
+  }
+
+  await loop();
 }
 
 main().catch(err => {

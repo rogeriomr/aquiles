@@ -1,15 +1,8 @@
 import { OnChainIndicators, Signal, SignalTier, BottomScore } from '../types';
 import { BOTTOM_THRESHOLDS } from '../config';
 
-function classifyBottom(value: number, thresholds: { watch: number; strong: number; extreme: number }, inverted = false): SignalTier {
-  // For bottom detection, lower values = stronger signal (except inverted)
-  if (inverted) {
-    if (value >= thresholds.watch)   return 'NORMAL';
-    if (value >= thresholds.strong)  return 'WATCH';
-    if (value >= thresholds.extreme) return 'STRONG';
-    return 'EXTREME';
-  }
-  // Default: lower is more extreme
+function classifyBottom(value: number, thresholds: { watch: number; strong: number; extreme: number }): SignalTier {
+  // For bottom detection, lower values = stronger signal
   if (value >= thresholds.watch)   return 'NORMAL';
   if (value >= thresholds.strong)  return 'WATCH';
   if (value >= thresholds.extreme) return 'STRONG';

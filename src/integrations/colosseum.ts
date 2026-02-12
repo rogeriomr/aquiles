@@ -2,11 +2,18 @@ import fetch from 'node-fetch';
 import { ColosseumProject } from '../types';
 import { logger } from '../utils/logger';
 
+function fetchWithTimeout(url: string, options: any = {}, timeoutMs = 30000): Promise<any> {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Request timeout after ${timeoutMs}ms`)), timeoutMs)),
+  ]) as Promise<any>;
+}
+
 const COLOSSEUM_API_BASE = 'https://agents.colosseum.com/api';
 
 export async function getAgentStatus(apiKey: string): Promise<any> {
   logger.info('Fetching Colosseum agent status...');
-  const res = await fetch(`${COLOSSEUM_API_BASE}/agents/status`, {
+  const res = await fetchWithTimeout(`${COLOSSEUM_API_BASE}/agents/status`, {
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
@@ -23,7 +30,7 @@ export async function getAgentStatus(apiKey: string): Promise<any> {
 
 export async function createProject(apiKey: string, project: ColosseumProject): Promise<any> {
   logger.info('Creating Colosseum project...');
-  const res = await fetch(`${COLOSSEUM_API_BASE}/my-project`, {
+  const res = await fetchWithTimeout(`${COLOSSEUM_API_BASE}/my-project`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
@@ -42,7 +49,7 @@ export async function createProject(apiKey: string, project: ColosseumProject): 
 
 export async function submitProject(apiKey: string): Promise<any> {
   logger.info('Submitting project to Colosseum hackathon...');
-  const res = await fetch(`${COLOSSEUM_API_BASE}/my-project/submit`, {
+  const res = await fetchWithTimeout(`${COLOSSEUM_API_BASE}/my-project/submit`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
@@ -60,7 +67,7 @@ export async function submitProject(apiKey: string): Promise<any> {
 
 export async function getProject(apiKey: string): Promise<any> {
   logger.info('Fetching Colosseum project...');
-  const res = await fetch(`${COLOSSEUM_API_BASE}/my-project`, {
+  const res = await fetchWithTimeout(`${COLOSSEUM_API_BASE}/my-project`, {
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',

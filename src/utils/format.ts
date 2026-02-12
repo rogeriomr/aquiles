@@ -3,7 +3,7 @@ export function formatUSD(value: number): string {
 }
 
 export function formatBTC(value: number): string {
-  return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  return 'BTC $' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
 export function formatPercent(value: number, decimals = 1): string {

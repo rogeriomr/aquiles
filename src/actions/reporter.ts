@@ -1,7 +1,7 @@
 import {
   RiskAssessment, OnChainIndicators, LoanWarning, TradeResult,
 } from '../types';
-import { formatUSD, formatPercent, formatRatio, padRight, tierBar } from '../utils/format';
+import { formatUSD, formatPercent, formatRatio, formatSOL, formatUSDC, padRight, tierBar, tierEmoji } from '../utils/format';
 
 export function generateFullReport(
   indicators: OnChainIndicators,
@@ -61,7 +61,7 @@ export function generateFullReport(
         ? tSignal!.tier
         : 'NORMAL';
 
-    lines.push(`  ${padRight(name, 24)} ${formatRatio(value, 3).padStart(10)} ${padRight(bTier, 10)} ${padRight(tTier, 10)} ${tierBar(activeTier)}`);
+    lines.push(`  ${padRight(name, 24)} ${formatRatio(value, 3).padStart(10)} ${padRight(bTier, 10)} ${padRight(tTier, 10)} ${tierEmoji(activeTier)}`);
   }
   lines.push('');
 
@@ -123,8 +123,8 @@ export function generateFullReport(
     if (tradeResult.success) {
       lines.push(`  Status:     SUCCESS`);
       lines.push(`  TX:         ${tradeResult.txSignature}`);
-      lines.push(`  Input:      ${tradeResult.inputAmount}`);
-      lines.push(`  Output:     ${tradeResult.outputAmount}`);
+      lines.push(`  Input:      ${formatSOL(tradeResult.inputAmount)}`);
+      lines.push(`  Output:     ${formatUSDC(tradeResult.outputAmount)}`);
       lines.push(`  Price:      ${tradeResult.price}`);
     } else {
       lines.push(`  Status:     FAILED`);

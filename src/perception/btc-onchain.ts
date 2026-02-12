@@ -28,6 +28,18 @@ export function loadIndicatorsFromFile(filePath?: string): OnChainIndicators {
     }
   }
 
+  // Runtime type validation: ensure every required field is a finite number
+  for (const field of required) {
+    if (typeof data[field] !== 'number' || !isFinite(data[field] as number)) {
+      throw new Error(`Invalid indicator value for ${field}: expected a finite number but got ${data[field]} in ${p}`);
+    }
+  }
+
+  // Validate btcPrice is positive
+  if (data.btcPrice <= 0) {
+    throw new Error(`btcPrice must be > 0 but got ${data.btcPrice} in ${p}`);
+  }
+
   logger.success(`Loaded ${Object.keys(data).length} indicators (BTC price: $${data.btcPrice.toLocaleString()})`);
   return data;
 }

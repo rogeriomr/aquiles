@@ -2,10 +2,17 @@ import fetch from 'node-fetch';
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { logger } from '../utils/logger';
 
+function fetchWithTimeout(url: string, options: any = {}, timeoutMs = 15000): Promise<any> {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Request timeout after ${timeoutMs}ms`)), timeoutMs)),
+  ]) as Promise<any>;
+}
+
 export async function getSolPrice(): Promise<number> {
   try {
     // Try Jupiter price API first
-    const res = await fetch('https://api.jup.ag/price/v2?ids=So11111111111111111111111111111111111111112');
+    const res = await fetchWithTimeout('https://api.jup.ag/price/v2?ids=So11111111111111111111111111111111111111112');
     const data = await res.json() as any;
     const price = parseFloat(data?.data?.['So11111111111111111111111111111111111111112']?.price);
     if (price && price > 0) {
@@ -18,7 +25,7 @@ export async function getSolPrice(): Promise<number> {
 
   try {
     // Fallback to CoinGecko
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+    const res = await fetchWithTimeout('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
     const data = await res.json() as any;
     const price = data?.solana?.usd;
     if (price && price > 0) {

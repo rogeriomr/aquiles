@@ -43,15 +43,40 @@ export const TOP_EXPOSURE_MAP: Record<number, number> = {
 };
 
 export function loadConfig(): AgentConfig {
+  // Validate mode
+  const rawMode = process.env.AGENT_MODE;
+  const mode: AgentMode = (rawMode === 'auto' || rawMode === 'alert') ? rawMode : 'alert';
+
+  // Parse with NaN guards (fall back to defaults if NaN)
+  const parsedColosseumAgentId = parseInt(process.env.COLOSSEUM_AGENT_ID || '');
+  const parsedSlippage = parseInt(process.env.MAX_SLIPPAGE_BPS || '100');
+  const parsedTradePercent = parseInt(process.env.MAX_TRADE_PERCENT || '100');
+  const parsedLoopInterval = parseInt(process.env.LOOP_INTERVAL_MINUTES || '30');
+
+  // Clamp maxSlippageBps between 1 and 500 (max 5%)
+  const maxSlippageBps = isNaN(parsedSlippage)
+    ? 100
+    : Math.max(1, Math.min(500, parsedSlippage));
+
+  // Clamp maxTradePercent between 1 and 100
+  const maxTradePercent = isNaN(parsedTradePercent)
+    ? 100
+    : Math.max(1, Math.min(100, parsedTradePercent));
+
+  // Minimum loopIntervalMinutes is 1
+  const loopIntervalMinutes = isNaN(parsedLoopInterval)
+    ? 30
+    : Math.max(1, parsedLoopInterval);
+
   return {
-    mode: (process.env.AGENT_MODE as AgentMode) || 'alert',
+    mode,
     rpcUrl: process.env.SOL_RPC_URL || 'https://api.mainnet-beta.solana.com',
     jupiterApiUrl: process.env.JUPITER_API_URL || 'https://quote-api.jup.ag/v6',
     walletPrivateKey: process.env.WALLET_PRIVATE_KEY,
     colosseumApiKey: process.env.COLOSSEUM_API_KEY,
-    colosseumAgentId: process.env.COLOSSEUM_AGENT_ID ? parseInt(process.env.COLOSSEUM_AGENT_ID) : 3860,
-    maxSlippageBps: parseInt(process.env.MAX_SLIPPAGE_BPS || '100'),
-    maxTradePercent: parseInt(process.env.MAX_TRADE_PERCENT || '100'),
-    loopIntervalMinutes: parseInt(process.env.LOOP_INTERVAL_MINUTES || '30'),
+    colosseumAgentId: isNaN(parsedColosseumAgentId) ? 3860 : parsedColosseumAgentId,
+    maxSlippageBps,
+    maxTradePercent,
+    loopIntervalMinutes,
   };
 }

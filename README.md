@@ -155,6 +155,67 @@ npx ts-node scripts/submit-project.ts
 
 ---
 
+## Sample Output
+
+```
+======================================================================
+  AQUILES - BTC ON-CHAIN INTELLIGENCE REPORT
+  2026-02-12 14:54:24 UTC
+======================================================================
+
+  SIGNAL: >>> ACCUMULATION <<<
+  Risk Level: ACCUMULATE | Urgency: HIGH
+  BTC Price: $68,040
+
+----------------------------------------------------------------------
+  BOTTOM SIGNALS: 3/8
+----------------------------------------------------------------------
+  [ ] MVRV                      1.220  NORMAL   Market above realized value
+  [X] STH MVRV                  0.740  STRONG   Short-term holders at loss, capitulation signal
+  [X] Mayer Multiple            0.670  STRONG   Price far below 200d MA, deep discount zone
+  [ ] Realized Price Ratio      1.240  NORMAL   Price well above realized price
+  [X] LTH SOPR                  0.780  STRONG   Long-term holders selling at loss, deep capitulation
+  [ ] AVIV Ratio                0.852  WATCH    Market undervalued vs active investors
+  [ ] CVDD Ratio                1.470  WATCH    Price near CVDD floor, strong support zone
+  [ ] Terminal Price Ratio      0.230  WATCH    Price far below terminal, deep value zone
+
+  Convergences:
+    * 3 indicators converging in bottom zone: STH MVRV, Mayer Multiple, LTH SOPR
+    * LTH SOPR below 1.0 - long-term holders capitulating (rare and significant)
+
+----------------------------------------------------------------------
+  TOP SIGNALS: 0/6
+----------------------------------------------------------------------
+  [ ] MVRV                      1.220  NORMAL   Market not yet overvalued
+  [ ] STH MVRV                  0.740  NORMAL   Short-term holders not yet euphoric
+  [ ] Mayer Multiple            0.670  NORMAL   Price not overextended vs 200d MA
+  [ ] LTH MVRV                  1.670  NORMAL   Long-term holders not yet at extreme profit
+  [ ] AVIV Ratio                0.852  NORMAL   Market not yet at premium levels
+  [ ] Terminal Price Ratio      0.230  NORMAL   Price well below terminal ceiling
+
+----------------------------------------------------------------------
+  RECOMMENDATION
+----------------------------------------------------------------------
+  Action: BUY_SOL
+  Recommended SOL Exposure: 40%
+
+----------------------------------------------------------------------
+  DEFI LENDING MANAGEMENT (Kamino / Jupiter)
+----------------------------------------------------------------------
+
+  The Achilles' heel of investors: leveraging in euphoria, deleveraging at the bottom.
+  On-chain data helps break this cycle with objective, historically-proven signals.
+
+  [ $ ] Bottom signals active. On-chain data suggests favorable conditions
+        for SOL-collateral loans on Kamino/Jupiter.
+
+======================================================================
+  Powered by Aquiles - BTC On-Chain Intelligence for Solana
+======================================================================
+```
+
+---
+
 ## How It Works
 
 ### 1. Perception Layer
@@ -171,7 +232,7 @@ npx ts-node scripts/submit-project.ts
 ### 3. Action Layer
 - **Alert Mode**: Generates formatted report with all indicators, convergences, price triggers, and recommendations
 - **Auto Mode**: Calculates trade size, gets Jupiter quote, executes SOL/USDC swap on Solana mainnet
-- **Reporter**: Produces comprehensive markdown report
+- **Reporter**: Produces comprehensive analysis report
 
 ---
 
