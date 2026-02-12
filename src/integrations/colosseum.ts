@@ -1,13 +1,6 @@
-import fetch from 'node-fetch';
+import { fetchWithTimeout } from '../utils/fetch';
 import { ColosseumProject } from '../types';
 import { logger } from '../utils/logger';
-
-function fetchWithTimeout(url: string, options: any = {}, timeoutMs = 30000): Promise<any> {
-  return Promise.race([
-    fetch(url, options),
-    new Promise((_, reject) => setTimeout(() => reject(new Error(`Request timeout after ${timeoutMs}ms`)), timeoutMs)),
-  ]) as Promise<any>;
-}
 
 const COLOSSEUM_API_BASE = 'https://agents.colosseum.com/api';
 

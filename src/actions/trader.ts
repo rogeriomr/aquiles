@@ -115,13 +115,13 @@ export async function executeTrade(
 
     // Check price impact
     const priceImpact = parseFloat(quote.priceImpactPct);
-    const inAmt = parseInt(quote.inAmount) || 1; // guard against division by zero
-    if (priceImpact > 2) {
+    const inAmt = parseInt(quote.inAmount, 10) || 1; // guard against division by zero
+    if (isNaN(priceImpact) || priceImpact > 2) {
       return {
         success: false,
-        inputAmount: parseInt(quote.inAmount),
-        outputAmount: parseInt(quote.outAmount),
-        price: parseInt(quote.outAmount) / inAmt,
+        inputAmount: parseInt(quote.inAmount, 10),
+        outputAmount: parseInt(quote.outAmount, 10),
+        price: parseInt(quote.outAmount, 10) / inAmt,
         error: `Price impact too high: ${priceImpact}%`,
       };
     }
@@ -142,9 +142,9 @@ export async function executeTrade(
     return {
       success: true,
       txSignature,
-      inputAmount: parseInt(quote.inAmount),
-      outputAmount: parseInt(quote.outAmount),
-      price: parseInt(quote.outAmount) / inAmt,
+      inputAmount: parseInt(quote.inAmount, 10),
+      outputAmount: parseInt(quote.outAmount, 10),
+      price: parseInt(quote.outAmount, 10) / inAmt,
     };
   } catch (error: any) {
     logger.error(`Trade execution failed: ${error.message}`);

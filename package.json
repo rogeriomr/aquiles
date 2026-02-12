@@ -8,7 +8,8 @@
     "start": "ts-node src/index.ts",
     "run:once": "ts-node scripts/run.ts",
     "run:loop": "ts-node scripts/run-loop.ts",
-    "submit": "ts-node scripts/submit-project.ts"
+    "submit": "ts-node scripts/submit-project.ts",
+    "test": "ts-node tests/analysis.test.ts"
   },
   "keywords": [
     "solana",

@@ -44,7 +44,7 @@ function calculateExposure(level: RiskLevel, bottom: BottomScore, top: TopScore)
     case 'DISTRIBUIR': {
       // More top signals = less SOL exposure (sell to USDC)
       const sellPercent = TOP_EXPOSURE_MAP[top.score] || 0;
-      return Math.max(0, 100 - sellPercent);
+      return Math.max(50, 100 - sellPercent);
     }
     case 'INCERTEZA':
       return 50; // Hedge: stay balanced

@@ -1,4 +1,5 @@
 import { RiskAssessment, LendingPosition, LoanWarning, AlertSeverity } from '../types';
+import { calculateLiquidationPrice, calculateLtvAtPrice } from '../perception/lending';
 
 export function assessLoanRisk(
   riskAssessment: RiskAssessment,
@@ -76,6 +77,9 @@ export function assessLoanRisk(
       ? ((position.currentPrice - position.liquidationPrice) / position.currentPrice) * 100
       : 100;
 
+    const calculatedLiqPrice = calculateLiquidationPrice(position);
+    const ltvAt20PercentDrop = calculateLtvAtPrice(position, position.currentPrice * 0.8);
+
     if (position.ltv > 80) {
       warnings.push({
         severity: 'DANGER',
@@ -86,14 +90,14 @@ export function assessLoanRisk(
     } else if (position.ltv > 65) {
       warnings.push({
         severity: 'WARNING',
-        message: `${position.protocol}: LTV at ${position.ltv.toFixed(1)}%. Consider adding collateral or repaying. Liquidation at $${position.liquidationPrice.toFixed(2)}.`,
+        message: `${position.protocol}: LTV at ${position.ltv.toFixed(1)}%. Consider adding collateral or repaying. Liquidation at $${position.liquidationPrice.toFixed(2)}. At -20% price: LTV would be ${ltvAt20PercentDrop.toFixed(1)}%.`,
         position,
         liquidationDistance: distanceToLiquidation,
       });
     } else if (position.ltv > 0) {
       warnings.push({
         severity: 'INFO',
-        message: `${position.protocol}: LTV at ${position.ltv.toFixed(1)}%. Healthy. Liquidation at $${position.liquidationPrice.toFixed(2)} (${distanceToLiquidation.toFixed(1)}% away).`,
+        message: `${position.protocol}: LTV at ${position.ltv.toFixed(1)}%. Healthy. Liquidation at $${calculatedLiqPrice.toFixed(2)} (${distanceToLiquidation.toFixed(1)}% away). At -20% price: LTV ${ltvAt20PercentDrop.toFixed(1)}%.`,
         position,
         liquidationDistance: distanceToLiquidation,
       });

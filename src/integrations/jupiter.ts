@@ -1,13 +1,6 @@
-import fetch from 'node-fetch';
+import { fetchWithTimeout } from '../utils/fetch';
 import { JupiterQuoteResponse, JupiterSwapResponse } from '../types';
 import { logger } from '../utils/logger';
-
-function fetchWithTimeout(url: string, options: any = {}, timeoutMs = 30000): Promise<any> {
-  return Promise.race([
-    fetch(url, options),
-    new Promise((_, reject) => setTimeout(() => reject(new Error(`Request timeout after ${timeoutMs}ms`)), timeoutMs)),
-  ]) as Promise<any>;
-}
 
 const DEFAULT_API_URL = 'https://quote-api.jup.ag/v6';
 
@@ -37,6 +30,12 @@ export async function getQuote(
   }
 
   const data = (await res.json()) as JupiterQuoteResponse;
+
+  // Runtime validation of Jupiter response
+  if (!data.inAmount || !data.outAmount || data.priceImpactPct === undefined) {
+    throw new Error('Invalid Jupiter quote response: missing required fields (inAmount, outAmount, priceImpactPct)');
+  }
+
   logger.success(`Jupiter quote: in=${data.inAmount} out=${data.outAmount} impact=${data.priceImpactPct}%`);
   return data;
 }
@@ -67,17 +66,13 @@ export async function getSwapTransaction(
   }
 
   const data = (await res.json()) as JupiterSwapResponse;
+
+  // Runtime validation
+  if (!data.swapTransaction) {
+    throw new Error('Invalid Jupiter swap response: missing swapTransaction');
+  }
+
   logger.success('Jupiter swap transaction built successfully');
   return data;
 }
 
-export async function getPrice(tokenMint: string): Promise<number> {
-  try {
-    const res = await fetchWithTimeout(`https://api.jup.ag/price/v2?ids=${tokenMint}`);
-    const data = (await res.json()) as any;
-    const price = parseFloat(data?.data?.[tokenMint]?.price);
-    return price || 0;
-  } catch {
-    return 0;
-  }
-}

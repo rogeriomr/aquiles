@@ -11,7 +11,7 @@ import { generateFullReport } from './actions/reporter';
 import { buildTradeAction, executeTrade } from './actions/trader';
 import { getPublicKey } from './integrations/solana';
 import { logger } from './utils/logger';
-import { AgentConfig, OnChainIndicators, TradeResult } from './types';
+import { AgentConfig, OnChainIndicators, TradeResult, LendingPosition } from './types';
 
 export async function runAgent(configOverride?: Partial<AgentConfig>): Promise<void> {
   logger.info('=== AQUILES AGENT STARTING ===');
@@ -40,18 +40,14 @@ export async function runAgent(configOverride?: Partial<AgentConfig>): Promise<v
   logger.signal(`Bottom: ${bottomScore.score}/${bottomScore.maxScore} | Top: ${topScore.score}/${topScore.maxScore} | Level: ${risk.level}`);
 
   // 4. Check lending positions
-  let loanWarnings = assessLoanRisk(risk, []);
-  if (config.walletPrivateKey) {
-    try {
-      const walletAddress = getPublicKey(config.walletPrivateKey);
-      const positions = await getLendingPositions(config.rpcUrl, walletAddress);
-      if (positions.length > 0) {
-        loanWarnings = assessLoanRisk(risk, positions);
-      }
-    } catch (e: any) {
-      logger.warn(`Lending check skipped: ${e.message}`);
-    }
+  let positions: LendingPosition[] = [];
+  try {
+    const walletAddr = config.walletPrivateKey ? getPublicKey(config.walletPrivateKey) : 'demo';
+    positions = await getLendingPositions(config.rpcUrl, walletAddr);
+  } catch (e: any) {
+    logger.warn(`Lending check skipped: ${e.message}`);
   }
+  const loanWarnings = assessLoanRisk(risk, positions);
 
   // 5. Execute based on mode
   let tradeResult: TradeResult | undefined;
@@ -99,7 +95,11 @@ export async function runAgent(configOverride?: Partial<AgentConfig>): Promise<v
 if (require.main === module) {
   const args = process.argv.slice(2);
   const modeArg = args.find(a => a.startsWith('--mode='));
-  const mode = modeArg ? modeArg.split('=')[1] as 'auto' | 'alert' : undefined;
+  const rawMode = modeArg ? modeArg.split('=')[1] : undefined;
+  const mode = rawMode ? (rawMode === 'auto' || rawMode === 'alert' ? rawMode : undefined) : undefined;
+  if (modeArg && !mode) {
+    logger.warn(`Invalid mode "${rawMode}". Use --mode=auto or --mode=alert. Falling back to config.`);
+  }
 
   runAgent(mode ? { mode } : undefined).catch(err => {
     logger.error(`Fatal error: ${err.message}`);

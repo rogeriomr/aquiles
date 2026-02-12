@@ -8,12 +8,14 @@ import bs58 from 'bs58';
 import { logger } from '../utils/logger';
 
 let _connection: Connection | null = null;
+let _connectionUrl: string | null = null;
 let _keypair: Keypair | null = null;
 
 export function getConnection(rpcUrl: string): Connection {
-  if (!_connection) {
+  if (!_connection || _connectionUrl !== rpcUrl) {
     _connection = new Connection(rpcUrl, 'confirmed');
-    logger.info(`Solana RPC connected: ${rpcUrl.substring(0, 40)}...`);
+    _connectionUrl = rpcUrl;
+    logger.info(`Solana RPC connected: ${new URL(rpcUrl).hostname}`);
   }
   return _connection;
 }
@@ -41,12 +43,6 @@ export function loadKeypair(privateKey: string): Keypair {
 export function getPublicKey(privateKey: string): string {
   const kp = loadKeypair(privateKey);
   return kp.publicKey.toBase58();
-}
-
-export async function getBalance(rpcUrl: string, address: string): Promise<number> {
-  const connection = getConnection(rpcUrl);
-  const balance = await connection.getBalance(new PublicKey(address));
-  return balance;
 }
 
 export async function sendVersionedTransaction(

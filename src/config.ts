@@ -9,7 +9,6 @@ export const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
 // Lamports
 export const LAMPORTS_PER_SOL = 1_000_000_000;
-export const USDC_DECIMALS = 6;
 
 // Default thresholds for bottom detection
 export const BOTTOM_THRESHOLDS = {
@@ -39,7 +38,7 @@ export const BOTTOM_EXPOSURE_MAP: Record<number, number> = {
 };
 
 export const TOP_EXPOSURE_MAP: Record<number, number> = {
-  0: 0, 1: 15, 2: 30, 3: 50, 4: 70, 5: 85, 6: 100,
+  0: 0, 1: 10, 2: 20, 3: 30, 4: 40, 5: 45, 6: 50,
 };
 
 export function loadConfig(): AgentConfig {
