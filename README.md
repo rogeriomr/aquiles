@@ -72,7 +72,7 @@ Out of 683+ projects in the Colosseum hackathon, **none** combine Bitcoin on-cha
 ### Installation
 
 ```bash
-git clone https://github.com/rogeriomenezesx/aquiles.git
+git clone https://github.com/rogeriomr/aquiles.git
 cd aquiles
 npm install
 ```
@@ -204,7 +204,7 @@ aquiles/
 ## Hackathon Submission
 
 - **Name**: Aquiles
-- **Repo**: https://github.com/rogeriomenezesx/aquiles
+- **Repo**: https://github.com/rogeriomr/aquiles
 - **Agent ID**: 3860
 - **Track**: DeFi / Trading / AI Agent
 - **Tags**: ai, defi, trading

@@ -79,7 +79,7 @@ export function buildProjectPayload(): ColosseumProject {
   return {
     name: 'Aquiles',
     description: 'Cross-chain intelligence agent: uses Bitcoin on-chain indicators to manage Solana exposure with auto-trading and smart alerts',
-    repoLink: 'https://github.com/rogeriomenezesx/aquiles',
+    repoLink: 'https://github.com/rogeriomr/aquiles',
     solanaIntegration: 'Jupiter DEX aggregator for automated SOL/USDC swaps based on BTC on-chain risk scores. Monitors Kamino/Marginfi lending positions for liquidation risk alerts. All transactions executed on Solana mainnet.',
     problemStatement: 'Crypto investors lack tools that leverage Bitcoin\'s superior on-chain data to manage altcoin exposure. BTC leads market cycles, yet Solana traders make decisions without this cross-chain intelligence, leading to poor timing on entries/exits and unnecessary liquidations on lending protocols.',
     technicalApproach: 'Perception-Analysis-Action architecture: (1) Ingests 14 BTC on-chain metrics (MVRV, STH/LTH MVRV, Mayer Multiple, AVIV, CVDD, LTH SOPR, Terminal Price, Realized Price). (2) Scores bottom (0-8) and top (0-6) signals with tier-weighted convergence detection. (3) Executes Jupiter swaps or generates detailed alerts with rationale. Includes loan management advisor for Solana lending protocols.',
